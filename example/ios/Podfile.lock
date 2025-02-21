@@ -1616,12 +1616,6 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - SocketRocket (0.7.1)
-  - VisionCamera (4.6.3):
-    - VisionCamera/Core (= 4.6.3)
-    - VisionCamera/React (= 4.6.3)
-  - VisionCamera/Core (4.6.3)
-  - VisionCamera/React (4.6.3):
-    - React-Core
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -1700,7 +1694,6 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RnLocalP2p (from `../..`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1856,8 +1849,6 @@ EXTERNAL SOURCES:
     :path: "../.."
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  VisionCamera:
-    :path: "../node_modules/react-native-vision-camera"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1937,7 +1928,6 @@ SPEC CHECKSUMS:
   RnLocalP2p: bec11164c8475f384125b038bbd831443634e942
   RNSVG: 2089e8b3a145acb2f392017279790f007f934567
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  VisionCamera: 030bcbf22791d698926e7c0e3b804126165e62e3
   Yoga: 78d74e245ed67bb94275a1316cdc170b9b7fe884
 
 PODFILE CHECKSUM: 5d6e2fb0d29a4a37c4c353f0a41997ec326a4bd5
