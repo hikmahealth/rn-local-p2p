@@ -67,10 +67,12 @@
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.5.0",
     "@react-native-community/cli": "15.0.1",
+    "@react-native-community/netinfo": "^11.4.1",
     "@react-native/eslint-config": "^0.73.1",
     "@release-it/conventional-changelog": "^9.0.2",
     "@types/jest": "^29.5.5",
     "@types/react": "^18.2.44",
+    "@types/uuid": "^10.0.0",
     "commitlint": "^17.0.2",
     "del-cli": "^5.1.0",
     "eslint": "^8.51.0",
@@ -80,7 +82,9 @@
     "prettier": "^3.0.3",
     "react": "18.3.1",
     "react-native": "0.77.0",
+    "react-native-aes-crypto": "^3.2.1",
     "react-native-builder-bob": "^0.37.0",
+    "react-native-udp": "^4.1.7",
     "release-it": "^17.10.0",
     "turbo": "^1.10.7",
     "typescript": "^5.2.2"
@@ -89,13 +93,16 @@
     "@types/react": "^18.2.44"
   },
   "peerDependencies": {
+    "@react-native-community/netinfo": "^11.4.1",
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-aes-crypto": "3.2.1",
+    "react-native-udp": "^4.1.7"
   },
   "workspaces": [
     "example"
   ],
-  "packageManager": "yarn@3.6.1",
+  "packageManager": "yarn@4.6.0",
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
@@ -133,6 +140,12 @@
     ],
     "rules": {
       "react/react-in-jsx-scope": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          "argsIgnorePattern": "^_"
+        }
+      ],
       "prettier/prettier": [
         "error",
         {
@@ -142,7 +155,9 @@
           "trailingComma": "es5",
           "useTabs": false
         }
-      ]
+      ],
+      "react-hooks/exhaustive-deps": "warn",
+      "no-unused-vars": "off"
     }
   },
   "eslintIgnore": [
@@ -199,5 +214,8 @@
     "type": "turbo-module",
     "languages": "cpp",
     "version": "0.48.1"
+  },
+  "dependencies": {
+    "uuid": "^11.0.5"
   }
 }

@@ -11,8 +11,22 @@ const root = path.resolve(__dirname, '..');
  *
  * @type {import('metro-config').MetroConfig}
  */
-module.exports = getConfig(getDefaultConfig(__dirname), {
+const config = getConfig(getDefaultConfig(__dirname), {
   root,
   pkg,
   project: __dirname,
 });
+
+module.exports = {
+  ...config,
+  resolver: {
+    ...config.resolver,
+    extraNodeModules: {
+      ...config.resolver?.extraNodeModules,
+      stream: require.resolve('stream-browserify'),
+      buffer: require.resolve('buffer/'),
+      // util: require.resolve('util/'),
+      process: require.resolve('process/browser'),
+    },
+  },
+};

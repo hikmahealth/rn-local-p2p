@@ -10,8 +10,23 @@
     "build:ios": "react-native build-ios --scheme RnLocalP2pExample --mode Debug --extra-params \"-sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO\""
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^2.1.1",
+    "@react-native-community/netinfo": "^11.4.1",
+    "buffer": "^4.9.2",
+    "events": "^1.1.1",
+    "process": "^0.11.10",
     "react": "18.3.1",
-    "react-native": "0.77.0"
+    "react-native": "0.77.0",
+    "react-native-aes-crypto": "^3.2.1",
+    "react-native-camera-kit": "^14.2.0",
+    "react-native-get-random-values": "^1.11.0",
+    "react-native-qrcode-svg": "^6.3.14",
+    "react-native-svg": "^15.11.1",
+    "react-native-udp": "^4.1.7",
+    "react-native-vision-camera": "^4.6.3",
+    "readable-stream": "^1.0.33",
+    "stream-browserify": "^1.0.0",
+    "vm-browserify": "^0.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -23,9 +38,34 @@
     "@react-native/babel-preset": "0.77.0",
     "@react-native/metro-config": "0.77.0",
     "@react-native/typescript-config": "0.77.0",
-    "react-native-builder-bob": "^0.37.0"
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@types/react-native": "^0.72.8",
+    "@types/react-native-get-random-values": "^1",
+    "react-native-builder-bob": "^0.37.0",
+    "rn-nodeify": "^10.3.0"
   },
   "engines": {
     "node": ">=18"
+  },
+  "react-native": {
+    "crypto": "react-native-crypto",
+    "_stream_transform": "readable-stream/transform",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_writable": "readable-stream/writable",
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "stream": "stream-browserify",
+    "vm": "vm-browserify"
+  },
+  "browser": {
+    "_stream_duplex": "readable-stream/duplex",
+    "_stream_passthrough": "readable-stream/passthrough",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_transform": "readable-stream/transform",
+    "_stream_writable": "readable-stream/writable",
+    "crypto": "react-native-crypto",
+    "stream": "stream-browserify",
+    "vm": "vm-browserify"
   }
 }
