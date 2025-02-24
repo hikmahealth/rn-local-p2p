@@ -1,0 +1,12 @@
+# Changelog
+
+## 0.2.0 (2025-02-24)
+
+* fix: update yarn lock file ([10ff9dd](https://github.com/3210jr/rn-local-p2p/commit/10ff9dd))
+* chore: add a changelog file and set release-it infile ([800d92f](https://github.com/3210jr/rn-local-p2p/commit/800d92f))
+* chore: drop kotlin version from 2 to 1.80 ([e8fc160](https://github.com/3210jr/rn-local-p2p/commit/e8fc160))
+* chore: initial commit ([152427c](https://github.com/3210jr/rn-local-p2p/commit/152427c))
+* chore: remove unused react-native-vision-camera from example project ([297e982](https://github.com/3210jr/rn-local-p2p/commit/297e982))
+* chore: update commitlint deps ([4cb1e80](https://github.com/3210jr/rn-local-p2p/commit/4cb1e80))
+* chore: update lock ([3a97b4f](https://github.com/3210jr/rn-local-p2p/commit/3a97b4f))
+* feat: p2p comms initial release ([ad8b7ce](https://github.com/3210jr/rn-local-p2p/commit/ad8b7ce))
