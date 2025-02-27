@@ -16,7 +16,7 @@ type Route<TReq, TRes> = {
 
 // Shape of router's routes
 type RouterRoutes = {
-  GET: Record<string, Route<void, any>>;
+  GET: Record<string, Route<any, any>>;
   POST: Record<string, Route<any, any>>;
   PUT: Record<string, Route<any, any>>;
   DELETE: Record<string, Route<any, any>>;
@@ -43,9 +43,34 @@ export type InferRouterType<T> = {
   };
 };
 
-export type Router = ReturnType<typeof createRouter>;
+// Define the router interface with generic methods
+export interface Router {
+  get<Path extends string, TRes = any>(
+    path: Path,
+    handler: RouteHandler<void, TRes>
+  ): Router;
 
-export const createRouter = () => {
+  post<Path extends string, TReq = any, TRes = any>(
+    path: Path,
+    handler: RouteHandler<TReq, TRes>
+  ): Router;
+
+  put<Path extends string, TReq = any, TRes = any>(
+    path: Path,
+    handler: RouteHandler<TReq, TRes>
+  ): Router;
+
+  delete<Path extends string, TReq = any, TRes = any>(
+    path: Path,
+    handler: RouteHandler<TReq, TRes>
+  ): Router;
+
+  handleRequest(request: HttpRequest<any>): Promise<HttpResponse<any>>;
+  getRoutes(): RouterRoutes;
+  initialize(requestResponse: RequestResponse): Router;
+}
+
+export const createRouter = (): Router => {
   const state: RouterState = {
     routes: {
       GET: {},
@@ -55,40 +80,40 @@ export const createRouter = () => {
     },
   };
 
-  const router = {
+  const router: Router = {
     // GET route handler
-    get: <Path extends string, TRes>(
+    get: <Path extends string, TRes = any>(
       path: Path,
       handler: RouteHandler<void, TRes>
     ) => {
-      state.routes.GET[path] = { path, handler };
+      state.routes.GET[path] = { path, handler } as Route<void, TRes>;
       return router;
     },
 
     // POST route handler
-    post: <Path extends string, TReq, TRes>(
+    post: <Path extends string, TReq = any, TRes = any>(
       path: Path,
       handler: RouteHandler<TReq, TRes>
     ) => {
-      state.routes.POST[path] = { path, handler };
+      state.routes.POST[path] = { path, handler } as Route<TReq, TRes>;
       return router;
     },
 
     // PUT route handler
-    put: <Path extends string, TReq, TRes>(
+    put: <Path extends string, TReq = any, TRes = any>(
       path: Path,
       handler: RouteHandler<TReq, TRes>
     ) => {
-      state.routes.PUT[path] = { path, handler };
+      state.routes.PUT[path] = { path, handler } as Route<TReq, TRes>;
       return router;
     },
 
     // DELETE route handler
-    delete: <Path extends string, TReq, TRes>(
+    delete: <Path extends string, TReq = any, TRes = any>(
       path: Path,
       handler: RouteHandler<TReq, TRes>
     ) => {
-      state.routes.DELETE[path] = { path, handler };
+      state.routes.DELETE[path] = { path, handler } as Route<TReq, TRes>;
       return router;
     },
 
