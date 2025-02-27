@@ -11,7 +11,12 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import { multiply, createRouter, useP2PCommunication } from 'rn-local-p2p';
+import {
+  multiply,
+  createRouter,
+  useP2PCommunication,
+  type StorageLayer,
+} from 'rn-local-p2p';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width: WIDTH } = Dimensions.get('screen');
@@ -134,7 +139,7 @@ export default function App() {
     { generateQRCode, scanQRCode, removePairedDevice, sendRequest },
   ] = useP2PCommunication({
     router,
-    storage: AsyncStorage,
+    storage: AsyncStorage as any as StorageLayer,
     port: 12345,
     password: 'password',
     salt: 'salt',

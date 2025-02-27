@@ -31,14 +31,14 @@ export type Device = {
   data: DeviceData;
 };
 
-export type P2PCommunicationState<T extends DeviceData> = {
+export type P2PCommunicationState = {
   myIpAddress: string;
   qrCode: string | null;
   pairedDevices: Device[];
 };
 
-export type P2PCommunicationActions<T extends DeviceData> = {
-  generateQRCode: (extraData?: T) => Promise<void>;
+export type P2PCommunicationActions = {
+  generateQRCode: (extraData?: DeviceData) => Promise<void>;
   scanQRCode: (data: string) => Promise<void>;
   sendRequest: <TReq = any, TRes = any>(
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
@@ -71,7 +71,7 @@ const DEFAULT_CONFIG: Required<P2PCommunicationConfig> = {
 
 export function useP2PCommunication<T extends DeviceData>(
   config: P2PCommunicationConfig = {}
-): [P2PCommunicationState<T>, P2PCommunicationActions<T>] {
+): [P2PCommunicationState, P2PCommunicationActions] {
   const finalConfig = { ...DEFAULT_CONFIG, ...config };
 
   const [peerNetwork, setPeerNetwork] = useState<PeerNetwork | null>(null);
@@ -83,7 +83,7 @@ export function useP2PCommunication<T extends DeviceData>(
     useState<RequestResponse | null>(null);
   const [encryptionKey, setEncryptionKey] = useState<string | null>(null);
 
-  const [state, setState] = useState<P2PCommunicationState<T>>({
+  const [state, setState] = useState<P2PCommunicationState>({
     myIpAddress: '',
     qrCode: null,
     pairedDevices: [],
@@ -162,7 +162,7 @@ export function useP2PCommunication<T extends DeviceData>(
     };
   }, []);
 
-  const actions: P2PCommunicationActions<T> = {
+  const actions: P2PCommunicationActions = {
     generateQRCode: async (extraData?: Record<string, any>) => {
       if (!peerNetwork || !qrCodePairing || !encryptionKey) return;
 
@@ -188,7 +188,28 @@ export function useP2PCommunication<T extends DeviceData>(
 
       try {
         const pairingInfo = await qrCodePairing.processQRCode(data);
-        await qrCodePairing.savePairingInfo(finalConfig.storage, pairingInfo);
+        const key = await qrCodePairing.savePairingInfo(
+          finalConfig.storage,
+          pairingInfo
+        );
+
+        const existingDeviceIndex = state.pairedDevices.findIndex(
+          (d) =>
+            d.pairingInfo.ipAddress === pairingInfo.ipAddress &&
+            d.pairingInfo.port === pairingInfo.port
+        );
+
+        if (existingDeviceIndex !== -1) {
+          setState((prev) => ({
+            ...prev,
+            pairedDevices: prev.pairedDevices.map((device, index) =>
+              index === existingDeviceIndex
+                ? { ...device, pairingInfo }
+                : device
+            ),
+          }));
+          return;
+        }
 
         const newDevice: Device = createDeviceFromPairingInfo(pairingInfo);
 

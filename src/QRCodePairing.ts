@@ -53,7 +53,7 @@ export type QRCodePairing = {
   savePairingInfo(
     storage: StorageLayer,
     pairingInfo: PairingInfo
-  ): Promise<void>;
+  ): Promise<any>;
 
   /**
    * Retrieves pairing information from storage using IP and Port.

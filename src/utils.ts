@@ -26,10 +26,11 @@ export function createPairingInfoKey(
 export const savePairingInfo = async (
   storage: StorageLayer,
   pairingInfo: PairingInfo
-): Promise<void> => {
+): Promise<string> => {
   const { ipAddress, port } = pairingInfo;
   const key = createPairingInfoKey(PAIRING_INFO_KEY_PREFIX, ipAddress, port);
   await storage.setItem(key, JSON.stringify(pairingInfo));
+  return key;
 };
 
 /**
