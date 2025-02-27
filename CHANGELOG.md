@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>0.2.6 (2025-02-27)</small>
+
+* fix: improve type inference of router ([56564d5](https://github.com/3210jr/rn-local-p2p/commit/56564d5))
+
 ## <small>0.2.5 (2025-02-27)</small>
 
 * fix: removing expired devices and pairings now using correct keys ([00895f1](https://github.com/3210jr/rn-local-p2p/commit/00895f1))
