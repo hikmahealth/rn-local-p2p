@@ -1,6 +1,6 @@
 {
   "name": "rn-local-p2p",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Peer to peer connection library over a local network, WiFi, without internet access using UDP",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",

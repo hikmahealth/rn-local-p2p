@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>0.2.1 (2025-02-27)</small>
+
+* fix: break up storage methods from qrcode pairings to allow external access with a shared storage ([be5c7fe](https://github.com/3210jr/rn-local-p2p/commit/be5c7fe))
+
 ## 0.2.0 (2025-02-24)
 
 * fix: update yarn lock file ([10ff9dd](https://github.com/3210jr/rn-local-p2p/commit/10ff9dd))
