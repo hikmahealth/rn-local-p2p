@@ -68,11 +68,11 @@ export const getAllPairedDevices = async (
   storage: StorageLayer
 ): Promise<Device[]> => {
   // Get all keys from storage
-  const allKeys = await storage.getItem('');
+  const allKeys = await storage.getAllKeys();
   if (!allKeys) return [];
 
   // Filter keys that start with the pairing info prefix
-  const keys = (allKeys as any).filter((key: string) =>
+  const keys = allKeys.filter((key: string) =>
     key.startsWith(PAIRING_INFO_KEY_PREFIX)
   );
 

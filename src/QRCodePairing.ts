@@ -4,8 +4,21 @@ import type { PairingInfo } from './RequestResponse';
 import { getAllPairedDevices, getPairingInfo, savePairingInfo } from './utils';
 
 export type StorageLayer = {
+  /**
+   * Gets an array of all keys in storage
+   */
+  getAllKeys: () => Promise<string[]>;
+  /**
+   * Gets the value stored at the given key
+   */
   getItem: (key: string) => Promise<string | null>;
+  /**
+   * Sets the value stored at the given key
+   */
   setItem: (key: string, value: string) => Promise<void>;
+  /**
+   * Removes the value stored at the given key
+   */
   removeItem: (key: string) => Promise<void>;
 };
 
