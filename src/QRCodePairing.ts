@@ -1,6 +1,7 @@
 import { DEFAULT_EXPIRY, PAIRING_INFO_KEY_PREFIX } from './constants';
+import type { Device } from './hooks/useP2PCommunication';
 import type { PairingInfo } from './RequestResponse';
-import { getPairingInfo, savePairingInfo } from './utils';
+import { getAllPairedDevices, getPairingInfo, savePairingInfo } from './utils';
 
 export type StorageLayer = {
   getItem: (key: string) => Promise<string | null>;
@@ -53,6 +54,13 @@ export type QRCodePairing = {
     ipAddress: string,
     port: number
   ): Promise<PairingInfo | null>;
+
+  /**
+   * Retrieves all paired devices from storage.
+   * @param storage The storage layer to use.
+   * @returns An array of Device objects for all paired devices.
+   */
+  getAllPairedDevices(storage: StorageLayer): Promise<Device[]>;
 
   /**
    * Removes all expired pairings from storage.
@@ -194,6 +202,7 @@ export const createQRCode = (
     processQRCode,
     savePairingInfo,
     getPairingInfo,
+    getAllPairedDevices,
     removeExpiredPairings,
   };
 };

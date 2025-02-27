@@ -6,6 +6,7 @@ import {
   createEncryption,
   createQRCode,
   createRequestResponse,
+  createDeviceFromPairingInfo,
 } from '../index';
 
 import type {
@@ -18,21 +19,26 @@ import type {
   StorageLayer,
 } from '../index';
 
-export type Device<T> = {
+type DeviceData = {
+  name?: string;
+  [key: string]: any;
+};
+
+export type Device = {
   id: string;
   name: string;
   pairingInfo: PairingInfo;
-  data: T;
+  data: DeviceData;
 };
 
-export type P2PCommunicationState<T> = {
+export type P2PCommunicationState<T extends DeviceData> = {
   myIpAddress: string;
   qrCode: string | null;
-  pairedDevices: Device<T>[];
+  pairedDevices: Device[];
 };
 
-export type P2PCommunicationActions<T> = {
-  generateQRCode: (extraData?: Record<string, any>) => Promise<void>;
+export type P2PCommunicationActions<T extends DeviceData> = {
+  generateQRCode: (extraData?: T) => Promise<void>;
   scanQRCode: (data: string) => Promise<void>;
   sendRequest: <TReq = any, TRes = any>(
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
@@ -63,7 +69,7 @@ const DEFAULT_CONFIG: Required<P2PCommunicationConfig> = {
   pairingInfoKeyPrefix: 'pairing-info',
 };
 
-export function useP2PCommunication<T>(
+export function useP2PCommunication<T extends DeviceData>(
   config: P2PCommunicationConfig = {}
 ): [P2PCommunicationState<T>, P2PCommunicationActions<T>] {
   const finalConfig = { ...DEFAULT_CONFIG, ...config };
@@ -127,7 +133,24 @@ export function useP2PCommunication<T>(
 
         const port = await newPeerNetwork.start(finalConfig.port);
         const ipAddress = await getIpAddress();
-        setState((prev) => ({ ...prev, myIpAddress: ipAddress }));
+
+        const code = await newQRCodePairing.generateQRCode(
+          port,
+          key,
+          undefined,
+          { deviceName: 'Device: ' + ipAddress, extraData: {} }
+        );
+
+        const pairedDevices = await newQRCodePairing.getAllPairedDevices(
+          finalConfig.storage
+        );
+
+        setState((prev) => ({
+          ...prev,
+          myIpAddress: ipAddress,
+          qrCode: code,
+          pairedDevices: pairedDevices,
+        }));
       } catch (error) {
         console.error('Initialization error:', error);
       }
@@ -167,12 +190,7 @@ export function useP2PCommunication<T>(
         const pairingInfo = await qrCodePairing.processQRCode(data);
         await qrCodePairing.savePairingInfo(finalConfig.storage, pairingInfo);
 
-        const newDevice: Device<T> = {
-          id: `${pairingInfo.ipAddress}:${pairingInfo.port}`,
-          name: pairingInfo.extraData?.deviceName || 'Unknown Device',
-          pairingInfo,
-          data: {} as T,
-        };
+        const newDevice: Device = createDeviceFromPairingInfo(pairingInfo);
 
         setState((prev) => ({
           ...prev,

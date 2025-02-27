@@ -1,4 +1,5 @@
 import { PAIRING_INFO_KEY_PREFIX } from './constants';
+import type { Device } from './hooks/useP2PCommunication';
 import type { StorageLayer } from './QRCodePairing';
 import type { PairingInfo } from './RequestResponse';
 
@@ -56,4 +57,60 @@ export const getPairingInfo = async (
     }
   }
   return null;
+};
+
+/**
+ * Gets all the paired devices from storage.
+ * @param storage The storage layer to use.
+ * @returns An array of paired devices stored in storage.
+ */
+export const getAllPairedDevices = async (
+  storage: StorageLayer
+): Promise<Device[]> => {
+  // Get all keys from storage
+  const allKeys = await storage.getItem('');
+  if (!allKeys) return [];
+
+  // Filter keys that start with the pairing info prefix
+  const keys = (allKeys as any).filter((key: string) =>
+    key.startsWith(PAIRING_INFO_KEY_PREFIX)
+  );
+
+  const pairedDevices: Device[] = [];
+
+  // Process each key to get the pairing info
+  for (const key of keys) {
+    const storedValue = await storage.getItem(key);
+    if (storedValue) {
+      const pairingInfo = JSON.parse(storedValue) as PairingInfo;
+
+      // Only include non-expired pairings
+      if (pairingInfo.expiry > Date.now()) {
+        const device = createDeviceFromPairingInfo(pairingInfo);
+        pairedDevices.push(device);
+      } else {
+        // Remove expired pairings
+        await storage.removeItem(key);
+      }
+    }
+  }
+
+  return pairedDevices;
+};
+
+/**
+ * Given pairing info create and return a Device object
+ * @param pairingInfo The pairing information
+ * @returns A Device object created from the pairing information
+ */
+export const createDeviceFromPairingInfo = (
+  pairingInfo: PairingInfo
+): Device => {
+  const { name, deviceName } = pairingInfo.extraData || {};
+  return {
+    id: `${pairingInfo.ipAddress}:${pairingInfo.port}`,
+    name: name || deviceName || 'Unknown Device',
+    pairingInfo,
+    data: pairingInfo.extraData || {},
+  };
 };
