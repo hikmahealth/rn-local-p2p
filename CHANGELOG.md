@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>0.2.4 (2025-02-27)</small>
+
+* fix: prevent adding same device multiple times to useP2PComms hook + fix types ([1a18de9](https://github.com/3210jr/rn-local-p2p/commit/1a18de9))
+
 ## <small>0.2.3 (2025-02-27)</small>
 
 * fix: add use warning, fix getAllPairedDevices method ([4fb0b52](https://github.com/3210jr/rn-local-p2p/commit/4fb0b52))
