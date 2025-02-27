@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import type { PeerNetwork } from './PeerNetwork';
 import type { Encryption } from './Encryption';
-import type { QRCodePairing } from './QRCodePairing';
+import type { QRCodePairing, StorageLayer } from './QRCodePairing';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -72,6 +72,7 @@ export type RequestResponse = {
 };
 
 export const createRequestResponse = (
+  storage: StorageLayer,
   peerNetwork: PeerNetwork,
   encryption: Encryption,
   getPairingInfo: QRCodePairing['getPairingInfo']
@@ -110,7 +111,11 @@ export const createRequestResponse = (
   peerNetwork.onReceive(
     async (data: Buffer, senderIpAddress: string, senderPort: number) => {
       try {
-        const pairingInfo = await getPairingInfo(senderIpAddress, senderPort);
+        const pairingInfo = await getPairingInfo(
+          storage,
+          senderIpAddress,
+          senderPort
+        );
         if (!pairingInfo) {
           console.error(
             `No pairing info found for ${senderIpAddress}:${senderPort}`

@@ -1,4 +1,6 @@
+import { DEFAULT_EXPIRY, PAIRING_INFO_KEY_PREFIX } from './constants';
 import type { PairingInfo } from './RequestResponse';
+import { getPairingInfo, savePairingInfo } from './utils';
 
 export type StorageLayer = {
   getItem: (key: string) => Promise<string | null>;
@@ -30,26 +32,34 @@ export type QRCodePairing = {
   processQRCode(qrCodeData: string): Promise<PairingInfo>;
 
   /**
-   * Saves pairing information to storage.
-   * @param pairingInfo The pairing information to save.
+   * Saves pairing information to storage
+   * @param storage The storage layer to use
+   * @param pairingInfo The pairing information to save
    */
-  savePairingInfo(pairingInfo: PairingInfo): Promise<void>;
+  savePairingInfo(
+    storage: StorageLayer,
+    pairingInfo: PairingInfo
+  ): Promise<void>;
 
   /**
    * Retrieves pairing information from storage using IP and Port.
-   * @param ipAddress
-   * @param port
+   * @param storage The storage layer to use.
+   * @param ipAddress The IP address to use for the key.
+   * @param port The port to use for the key.
+   * @returns The pairing information stored in storage, or null if not found.
    */
-  getPairingInfo(ipAddress: string, port: number): Promise<PairingInfo | null>;
+  getPairingInfo(
+    storage: StorageLayer,
+    ipAddress: string,
+    port: number
+  ): Promise<PairingInfo | null>;
 
   /**
    * Removes all expired pairings from storage.
+   * @param storage The storage layer to use.
    */
-  removeExpiredPairings(): Promise<void>;
+  removeExpiredPairings(storage: StorageLayer): Promise<void>;
 };
-
-const DEFAULT_EXPIRY = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
-export const PAIRING_INFO_KEY_PREFIX = 'pairingInfo:';
 
 export const createQRCode = (
   storage: StorageLayer,
@@ -129,32 +139,35 @@ export const createQRCode = (
     }
   };
 
-  const savePairingInfo = async (pairingInfo: PairingInfo): Promise<void> => {
-    const { ipAddress, port } = pairingInfo;
-    const key = createPairingInfoKey(PAIRING_INFO_KEY_PREFIX, ipAddress, port);
-    await storage.setItem(key, JSON.stringify(pairingInfo));
-  };
+  // const savePairingInfo = async (pairingInfo: PairingInfo): Promise<void> => {
+  //   const { ipAddress, port } = pairingInfo;
+  //   const key = createPairingInfoKey(PAIRING_INFO_KEY_PREFIX, ipAddress, port);
+  //   await storage.setItem(key, JSON.stringify(pairingInfo));
+  // };
 
-  const getPairingInfo = async (
-    ipAddress: string,
-    port: number
-  ): Promise<PairingInfo | null> => {
-    const key = createPairingInfoKey(PAIRING_INFO_KEY_PREFIX, ipAddress, port);
-    const storedValue = await storage.getItem(key);
-    if (storedValue) {
-      const pairingInfo = JSON.parse(storedValue) as PairingInfo;
-      if (pairingInfo.expiry > Date.now()) {
-        return pairingInfo;
-      } else {
-        // Expired, so move it
-        await storage.removeItem(key);
-        return null;
-      }
-    }
-    return null;
-  };
+  // const getPairingInfo = async (
+  //   storage: StorageLayer,
+  //   ipAddress: string,
+  //   port: number
+  // ): Promise<PairingInfo | null> => {
+  //   const key = createPairingInfoKey(PAIRING_INFO_KEY_PREFIX, ipAddress, port);
+  //   const storedValue = await storage.getItem(key);
+  //   if (storedValue) {
+  //     const pairingInfo = JSON.parse(storedValue) as PairingInfo;
+  //     if (pairingInfo.expiry > Date.now()) {
+  //       return pairingInfo;
+  //     } else {
+  //       // Expired, so move it
+  //       await storage.removeItem(key);
+  //       return null;
+  //     }
+  //   }
+  //   return null;
+  // };
 
-  const removeExpiredPairings = async (): Promise<void> => {
+  const removeExpiredPairings = async (
+    storage: StorageLayer
+  ): Promise<void> => {
     // This could be inneficient with AsyncStorage if there are many keys
     //
     // With async storage: we get all keys then loop through them all
@@ -184,11 +197,3 @@ export const createQRCode = (
     removeExpiredPairings,
   };
 };
-
-export function createPairingInfoKey(
-  prefix: string,
-  ipAddress: string,
-  port: number
-): string {
-  return `${prefix}:${ipAddress}:${port}`;
-}

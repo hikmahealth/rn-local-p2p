@@ -5,6 +5,7 @@ export * from './Encryption';
 export * from './QRCodePairing';
 export * from './PeerNetwork';
 export * from './Router';
+export * from './utils';
 
 export * from './hooks/useP2PCommunication';
 

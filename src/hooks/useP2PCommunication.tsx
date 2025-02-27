@@ -101,6 +101,7 @@ export function useP2PCommunication<T>(
           getIpAddress
         );
         const newRequestResponse = createRequestResponse(
+          finalConfig.storage,
           newPeerNetwork,
           newEncryption,
           newQRCodePairing.getPairingInfo
@@ -164,7 +165,7 @@ export function useP2PCommunication<T>(
 
       try {
         const pairingInfo = await qrCodePairing.processQRCode(data);
-        await qrCodePairing.savePairingInfo(pairingInfo);
+        await qrCodePairing.savePairingInfo(finalConfig.storage, pairingInfo);
 
         const newDevice: Device<T> = {
           id: `${pairingInfo.ipAddress}:${pairingInfo.port}`,
