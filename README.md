@@ -4,6 +4,11 @@ Peer to peer connection library over a local network, WiFi, without internet acc
 
 > **Warning**: This library is in pre-release state and should be used with caution. It has not been tested at scale in production environments, and both the API and internal implementations are subject to frequent changes. Use at your own risk.
 
+**TODO**:
+
+- Improve test coverage
+- Add created and updated at timestamps to pairings
+
 ## Installation
 
 ```sh

@@ -7,6 +7,7 @@ import {
   createQRCode,
   createRequestResponse,
   createDeviceFromPairingInfo,
+  createPairingInfoKey,
 } from '../index';
 
 import type {
@@ -18,6 +19,7 @@ import type {
   Router,
   StorageLayer,
 } from '../index';
+import { PAIRING_INFO_KEY_PREFIX } from '../constants';
 
 type DeviceData = {
   name?: string;
@@ -254,12 +256,25 @@ export function useP2PCommunication<T extends DeviceData>(
 
     removePairedDevice: async (deviceId: string) => {
       try {
+        // Update state to remove device from UI
         setState((prev) => ({
           ...prev,
           pairedDevices: prev.pairedDevices.filter((d) => d.id !== deviceId),
         }));
 
-        const key = `${finalConfig.pairingInfoKeyPrefix}-${deviceId}`;
+        // Parse the deviceId to get ipAddress and port
+        const [ipAddress, portStr] = deviceId.split(':');
+        if (!ipAddress || !portStr) {
+          throw new Error('Invalid device id: ' + deviceId);
+        }
+        const port = parseInt(portStr, 10);
+
+        // Create the key using the same format as when it was stored
+        const key = createPairingInfoKey(
+          PAIRING_INFO_KEY_PREFIX,
+          ipAddress,
+          port
+        );
         await finalConfig.storage?.removeItem(key);
       } catch (error: any) {
         console.error('Error removing paired device:', error.message);

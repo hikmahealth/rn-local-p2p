@@ -1,7 +1,12 @@
 import { DEFAULT_EXPIRY, PAIRING_INFO_KEY_PREFIX } from './constants';
 import type { Device } from './hooks/useP2PCommunication';
 import type { PairingInfo } from './RequestResponse';
-import { getAllPairedDevices, getPairingInfo, savePairingInfo } from './utils';
+import {
+  createPairingInfoKey,
+  getAllPairedDevices,
+  getPairingInfo,
+  savePairingInfo,
+} from './utils';
 
 export type StorageLayer = {
   /**
@@ -189,24 +194,20 @@ export const createQRCode = (
   const removeExpiredPairings = async (
     storage: StorageLayer
   ): Promise<void> => {
-    // This could be inneficient with AsyncStorage if there are many keys
-    //
-    // With async storage: we get all keys then loop through them all
-    const allKeys = await storage.getItem('');
-    if (!allKeys) return;
+    const allPairedDevices = await getAllPairedDevices(storage);
 
-    const keys = (allKeys as any).filter((key: string) =>
-      key.startsWith(PAIRING_INFO_KEY_PREFIX)
+    const currentTime = Date.now();
+    const expiredDevices = allPairedDevices.filter(
+      (device) => device.pairingInfo.expiry <= currentTime
     );
 
-    for (const key of keys) {
-      const storedValue = await storage.getItem(key);
-      if (storedValue) {
-        const pairingInfo = JSON.parse(storedValue) as PairingInfo;
-        if (pairingInfo.expiry <= Date.now()) {
-          await storage.removeItem(key);
-        }
-      }
+    for (const device of expiredDevices) {
+      const key = createPairingInfoKey(
+        PAIRING_INFO_KEY_PREFIX,
+        device.pairingInfo.ipAddress,
+        device.pairingInfo.port
+      );
+      await storage.removeItem(key);
     }
   };
 
