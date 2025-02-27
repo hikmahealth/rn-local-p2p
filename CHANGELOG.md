@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>0.2.3 (2025-02-27)</small>
+
+* fix: add use warning, fix getAllPairedDevices method ([4fb0b52](https://github.com/3210jr/rn-local-p2p/commit/4fb0b52))
+
 ## <small>0.2.2 (2025-02-27)</small>
 
 * refactor: added flexibility for storage management and can fetch all devices paired ([a436c5c](https://github.com/3210jr/rn-local-p2p/commit/a436c5c))
