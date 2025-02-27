@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>0.2.5 (2025-02-27)</small>
+
+* fix: removing expired devices and pairings now using correct keys ([00895f1](https://github.com/3210jr/rn-local-p2p/commit/00895f1))
+
 ## <small>0.2.4 (2025-02-27)</small>
 
 * fix: prevent adding same device multiple times to useP2PComms hook + fix types ([1a18de9](https://github.com/3210jr/rn-local-p2p/commit/1a18de9))
