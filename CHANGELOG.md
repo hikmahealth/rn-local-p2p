@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>0.2.7 (2025-03-25)</small>
+
+* fix: set ruby version explicityly, update rn-svg ([a137960](https://github.com/3210jr/rn-local-p2p/commit/a137960))
+
 ## <small>0.2.6 (2025-02-27)</small>
 
 * fix: improve type inference of router ([56564d5](https://github.com/3210jr/rn-local-p2p/commit/56564d5))
