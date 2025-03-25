@@ -1551,7 +1551,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RnLocalP2p (0.1.0):
+  - RnLocalP2p (0.2.6):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1572,7 +1572,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNSVG (15.11.1):
+  - RNSVG (15.11.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1592,9 +1592,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNSVG/common (= 15.11.1)
+    - RNSVG/common (= 15.11.2)
     - Yoga
-  - RNSVG/common (15.11.1):
+  - RNSVG/common (15.11.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1893,7 +1893,7 @@ SPEC CHECKSUMS:
   react-native-aes: e38d08f68d27e85d14590b7ef0b404ceebf5f891
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
-  react-native-udp: 806f16ab890dd838bc073afcebd6a221d4965572
+  react-native-udp: 7e484efc89db2214f7501ac946781d3205b2c6a0
   React-nativeconfig: cd0fbb40987a9658c24dab5812c14e5522a64929
   React-NativeModulesApple: 4a9c304aa4fb086af32e8758ba892386d895b4d3
   React-perflogger: 721172bda31a65ce7b7a0c3bf3de96f12ef6f45d
@@ -1925,11 +1925,11 @@ SPEC CHECKSUMS:
   ReactCommon: 1bd2dc684d7992acbf0dfee887b89a57a1ead86d
   ReactNativeCameraKit: 652e6013cae55298c1f65afeb65895364eb5b1ed
   RNCAsyncStorage: a025c661a88f7db9d59d451d495decb375bb1b53
-  RnLocalP2p: bec11164c8475f384125b038bbd831443634e942
-  RNSVG: 2089e8b3a145acb2f392017279790f007f934567
+  RnLocalP2p: 1db7418bf4f55ea3a500ad4645794aa03008c81b
+  RNSVG: 12bc810ee6b5132c868b8586dc03b8cb0f86af0a
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  Yoga: 78d74e245ed67bb94275a1316cdc170b9b7fe884
+  Yoga: c0d8564af14a858f962607cd7306539cb2ace926
 
 PODFILE CHECKSUM: 5d6e2fb0d29a4a37c4c353f0a41997ec326a4bd5
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2
